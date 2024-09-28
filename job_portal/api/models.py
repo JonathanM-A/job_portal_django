@@ -24,15 +24,6 @@ class User(AbstractUser):
     def __str__(self) -> str:
         return f"Name: {self.first_name} {self.last_name}, Email: {self.email}"
     
-    def create_superuser(first_name, last_name, email, password, is_employer):
-        if User.objects.filter(email=email).exists():
-            print(f"Superuser with email '{email}' already exists.")
-            return None
-
-        superuser = User.objects.create_superuser(
-            first_name=first_name, last_name=last_name, email=email, password=password, is_employer=is_employer)
-        print(f"Superuser '{email}' created successfully!")
-
     
 class Job(models.Model):
     posted_by = models.ForeignKey(
