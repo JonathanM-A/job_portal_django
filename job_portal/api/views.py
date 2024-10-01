@@ -18,6 +18,9 @@ class UserViewSet(viewsets.ModelViewSet):
 class JobViewSet(viewsets.ModelViewSet):
     queryset = Job.objects.all()
     serializer_class = JobSerializer
+    
+    filterset_fields = ['location', 'job_type']
+    search_fields = ['title', 'description', 'company_name']
 
     def get_permissions(self):
         if self.action in ["create", "delete", "update"]:

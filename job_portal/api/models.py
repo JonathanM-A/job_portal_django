@@ -29,7 +29,10 @@ class Job(models.Model):
     posted_by = models.ForeignKey(
         settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name="posted_jobs"
     )
+    company_name = models.CharField()
     title = models.CharField()
+    job_type = models.CharField(default='In Office') # remote, hybrid, in office
+    location = models.CharField(default='Accra')
     description = models.TextField()
     time_posted = models.DateField(auto_now_add=True)
     num_applicants = models.IntegerField(default=0)
