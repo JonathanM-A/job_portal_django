@@ -7,6 +7,7 @@ This project is a **Job Portal API** built with **Django** and **Django REST Fra
 ### Features
 - **User Registration & Authentication**: Secure user registration and login using JWTs.
 - **Job Listings**: Allows companies to create, edit, and delete job postings.
+- **Job Searching and Filtering**: Allows candidates to search for keywords and filter job postings.
 - **Job Application**: Candidates can apply to job listings.
 - **Admin Panel**: Built-in Django admin panel for managing users, job postings, and applications.
 
