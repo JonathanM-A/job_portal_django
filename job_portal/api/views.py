@@ -100,6 +100,22 @@ class ApplicationViewSet(viewsets.ModelViewSet):
             serializer = self.get_serializer(applications, many=True)
             return Response(serializer.data, status=200)
         return Response({"message": "No Applications Found"}, status=404)
+    
+    @action(detail=True, methods=["PATCH"], permission_classes=[CanApplyForJob])
+    def status(self, request, pk=None):
+        valid_status = ['under review', 'rejected', 'accepted']
+        application = self.get_object()
+
+        old_status = application.status
+        new_status = request.data.get("status")
+
+        if new_status not in valid_status:
+            return Response({"error": "Invalid status"}, status=400)
+        
+        application.status = new_status
+        application.save()
+
+        return Response(status=204)
 
 
 class LogoutView(TokenBlacklistView):

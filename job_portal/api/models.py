@@ -49,6 +49,7 @@ class Application(models.Model):
         Job, on_delete=models.CASCADE, related_name="applications"
     )
     cv = models.FileField(upload_to="CVs/")
+    status = models.CharField(default="pending")
     time_applied = models.DateField(auto_now_add=True)
 
     def __str__(self):
