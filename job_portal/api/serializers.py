@@ -1,12 +1,14 @@
 from rest_framework import serializers
 from django.contrib.auth import authenticate
 from .models import User, Job, Application
+from django.utils import timezone
 
 class UserSerializer(serializers.ModelSerializer):
+    password = serializers.CharField(write_only=True)
+
     class Meta:
         model = User
         fields = ['first_name', 'last_name','password', 'email', 'is_employer']
-        write_only_fields = ['password']
 
     def create(self, validated_data):
         password = validated_data.pop("password")
@@ -59,7 +61,7 @@ class ApplicationSerializer(serializers.ModelSerializer):
         )
 
     def __str__(self):
-        return f"Job Title: {self.job.title}, Applicant: {self.applicant}"
+        return f"Job Title: {self.listing.title}, Applicant: {self.applicant}"
 
 
 class LoginSerializer(serializers.Serializer):
@@ -69,10 +71,11 @@ class LoginSerializer(serializers.Serializer):
     def validate(self, data):
         email = data.get('email')
         password = data.get('password')
-    
+
         user = authenticate(username=email, password=password)
 
         if not user:
             raise serializers.ValidationError("Invalid email or password.")
+        user.last_login = timezone.now
         data['user'] = user
         return data

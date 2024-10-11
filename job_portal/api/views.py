@@ -1,7 +1,7 @@
 from rest_framework import viewsets
 from rest_framework.decorators import action
 from rest_framework_simplejwt.views import TokenBlacklistView
-from rest_framework.permissions import IsAuthenticated
+from rest_framework.permissions import IsAuthenticated, AllowAny
 from rest_framework.response import Response
 from rest_framework_simplejwt.tokens import OutstandingToken, BlacklistedToken
 from rest_framework.exceptions import PermissionDenied
@@ -13,6 +13,12 @@ from .permissions import CanApplyForJob, CanPostJob
 class UserViewSet(viewsets.ModelViewSet):
     queryset = User.objects.all()
     serializer_class = UserSerializer
+    permission_classes = [AllowAny]
+
+    def get_permissions(self):
+        if self.action in ['retrieve', 'update', 'partial_update', 'destroy']:
+            self.permission_classes = [IsAuthenticated]
+        return super().get_permissions()
 
 
 class JobViewSet(viewsets.ModelViewSet):
